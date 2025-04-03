@@ -1,25 +1,11 @@
+import api from './api/index.js';
+
 import express from 'express';
 const app = express();
-const port = 3000;
 
 app.use('/public', express.static('public'));
+app.use(express.urlencoded({extended: true}));
 
-app.get('/api/v1/cat', (req, res) => {
-    console.log('query params object', req.query);
-    const myData = {
-        cat_id: 1,
-        name: 'Dog',
-        birthdate: '100 BC',
-        weight: 100,
-        owner: 'Pekka',
-        iamge: 'https://loremflickr.com/320/240/cat'
+app.use('/api/v1', api);
 
-    };
-    res.json(myData);
-});
-
-//some stuff
-
-app.listen(port, () => {
-  console.log(`Server running`);
-});
+export default app;
