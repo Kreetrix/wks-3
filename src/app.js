@@ -18,6 +18,8 @@ app.get('/api/v1/cat', (req, res) => {
     res.json(myData);
 });
 
+//some stuff
+
 app.listen(port, () => {
   console.log(`Server running`);
 });
