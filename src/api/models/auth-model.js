@@ -13,7 +13,6 @@ const login = async (user) => {
 
 const register = async (user) => {
     const {name, username, email, passwd, role} = user;
-    console.log("user ", user)
     const [result] = await promisePool.execute(
         `INSERT INTO wsk_users (name, username, email, password, role)
         VALUES (?, ?, ?, ?, ?)`,

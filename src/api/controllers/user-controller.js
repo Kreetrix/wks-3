@@ -8,61 +8,67 @@ import {
 
 import bcrypt from 'bcrypt';
 
-const getUser = async (req, res) => {
+const getUser = async (req, res, next) => {
   try {
     const users = await listAllUsers();
     res.json(users);
   } catch (error) {
-    res.status(500).json({message: error.message});
+    next(error);
   }
 };
 
-const getUserById = async (req, res) => {
+const getUserById = async (req, res, next) => {
   try {
     const user = await findUserById(req.params.id);
     if (user) {
       res.json(user);
     } else {
-      res.status(404).json({message: 'User not found'});
+      const error = new Error('User not found');
+      error.status = 404;
+      next(error);
     }
   } catch (error) {
-    res.status(500).json({message: error.message});
+    next(error);
   }
 };
 
-const postUser = async (req, res) => {
+const postUser = async (req, res, next) => {
   try {
     req.body.password = bcrypt.hashSync(req.body.password, 10);
     const result = await addUser(req.body);
     res.status(201).json({message: 'New user added.', result});
   } catch (error) {
-    res.status(500).json({message: error.message});
+    next(error);
   }
 };
 
-const putUser = async (req, res) => {
+const putUser = async (req, res, next) => {
   try {
     const success = await modifyUser(req.body, req.params.id);
     if (success) {
       res.json({message: 'User updated.'});
     } else {
-      res.status(404).json({message: 'User not found'});
+      const error = new Error('User not found');
+      error.status = 404;
+      next(error);
     }
   } catch (error) {
-    res.status(500).json({message: error.message});
+    next(error);
   }
 };
 
-const deleteUser = async (req, res) => {
+const deleteUser = async (req, res, next) => {
   try {
     const success = await removeUser(req.params.id);
     if (success) {
       res.json({message: 'User deleted.'});
     } else {
-      res.status(404).json({message: 'User not found'});
+      const error = new Error('User not found');
+      error.status = 404;
+      next(error);
     }
   } catch (error) {
-    res.status(500).json({message: error.message});
+    next(error);
   }
 };
 

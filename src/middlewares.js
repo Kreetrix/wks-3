@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
+import { validationResult } from 'express-validator';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -58,4 +59,21 @@ const authenticateRole = (role) => {
   };
 };
 
-export { createThumbnail, authenticateToken, authenticateRole };
+const validationErrors = (req, res, next) => {
+  const errors = validationResult(req);
+  
+  if (!errors.isEmpty()) {
+    const errorMessages = errors.array()
+      .map(error => `${error.msg} (field: ${error.path})`)
+      .join(', ');
+    
+    const error = new Error(`Validation failed: ${errorMessages}`);
+    error.status = 400;
+    return next(error);
+  }
+  
+  next();
+};
+
+
+export { createThumbnail, authenticateToken, authenticateRole, validationErrors };
