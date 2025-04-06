@@ -17,3 +17,5 @@ userRouter.route('/:id')
     .get(getUserById)
     .put(putUser)
     .delete(deleteUser)
+
+export default userRouter;
