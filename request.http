@@ -15,3 +15,15 @@ Content-Type: image/jpeg
 
 < ./public/work.jpg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+POST http://localhost:3000/api/v1/user
+Content-Type: application/json
+
+{
+  "name": "User",
+  "username": "newuser",
+  "email": "new@metropolia.fi",
+  "password": "10110203004",
+  "role": "user"
+}
