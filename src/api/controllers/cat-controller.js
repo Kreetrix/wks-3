@@ -39,12 +39,15 @@ const getCatsByUserId = async (req, res) => {
 };
 
 const postCat = async (req, res) => {
+  console.log(req.body)
   try {
     const cat = {
       ...req.body,
       filename: req.file?.filename || null
     };
+    
     const result = await addCat(cat);
+    
     res.status(201).json({message: 'New cat added.', result});
   } catch (error) {
     res.status(500).json({message: error.message});
@@ -65,15 +68,17 @@ const putCat = async (req, res) => {
 };
 
 const deleteCat = async (req, res) => {
+  const { id } = req.params;
+  const { user_id, role } = res.locals.user;
+
   try {
-    const success = await removeCat(req.params.id);
-    if (success) {
-      res.json({message: 'Cat deleted.'});
-    } else {
-      res.status(404).json({message: 'Cat not found'});
+    const success = await removeCat(id, user_id, role);
+    if (!success) {
+      return res.status(404).json({ message: 'Cat not found or unauthorized' });
     }
+    res.json({ message: 'Cat deleted' });
   } catch (error) {
-    res.status(500).json({message: error.message});
+    res.status(500).json({ message: error.message });
   }
 };
 

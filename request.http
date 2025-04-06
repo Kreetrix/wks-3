@@ -21,9 +21,22 @@ POST http://localhost:3000/api/v1/user
 Content-Type: application/json
 
 {
-  "name": "User",
-  "username": "newuser",
+  "name": "Sigma2",
+  "username": "JohnDoe",
   "email": "new@metropolia.fi",
-  "password": "10110203004",
+  "password": "1234",
   "role": "user"
 }
+
+### Post login
+POST http://localhost:3000/api/v1/auth/login
+content-type: application/json
+
+{
+  "username": "12345",
+  "password": "1234"
+}
+
+### Get my user info
+GET http://localhost:3000/api/v1/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0MSwibmFtZSI6IkpvaG5Eb2UiLCJ1c2VybmFtZSI6IkpvaG5Eb2UiLCJlbWFpbCI6Im5ld0BtZXRyb3BvbGlhLmZpIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NDM5NjIxODcsImV4cCI6MTc0NDA0ODU4N30.kzXezdYJ5ZfXXgk3GUvQJBurfdosN2hcalW5HrPs0LE

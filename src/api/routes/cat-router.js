@@ -9,18 +9,19 @@ import {
   putCat,
   deleteCat
 } from '../controllers/cat-controller.js';
+import { authenticateToken } from '../../middlewares.js';
 
 const upload = multer({ dest: 'uploads/' });
 const catRouter = express.Router();
 
 catRouter.route('/')
   .get(getCat)
-  .post(upload.single('cat'), createThumbnail, postCat);
+  .post(upload.single('file'), createThumbnail, postCat);
 
 catRouter.route('/:id')
   .get(getCatById)
-  .put(putCat)
-  .delete(deleteCat);
+  .put(authenticateToken, putCat)
+  .delete(authenticateToken, deleteCat);
 
 catRouter.route('/user/:userId')
   .get(getCatsByUserId);

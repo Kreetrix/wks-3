@@ -57,11 +57,18 @@ const modifyCat = async (cat, id) => {
   return result.affectedRows > 0;
 };
 
-const removeCat = async (id) => {
-  const [result] = await promisePool.execute(
-    `DELETE FROM wsk_cats WHERE cat_id = ?`,
-    [id]
-  );
+const removeCat = async (id, userId, role) => {
+  let sql, params;
+  
+  if (role === 'admin') {
+    sql = 'DELETE FROM wsk_cats WHERE cat_id = ?';
+    params = [id];
+  } else {
+    sql = 'DELETE FROM wsk_cats WHERE cat_id = ? AND owner = ?';
+    params = [id, userId];
+  }
+
+  const [result] = await promisePool.execute(sql, params);
   return result.affectedRows > 0;
 };
 
